@@ -21,6 +21,7 @@ public class GUI extends JFrame {
 	static JComboBox<String> options;
 	static JTextField text;
 	JButton button;
+	JButton reset;
 	static String type = new String();
 	static String input = new String();
 	JPanel middle;
@@ -155,6 +156,22 @@ public class GUI extends JFrame {
 		
 	}
 	
+	public void resetButton() {
+		reset = new JButton("Reset");
+		reset.setMaximumSize(new Dimension(200, 50));
+		reset.setVisible(true);
+		
+		reset.addActionListener(new ResetAction());
+		panel.add(reset);
+	}
+	
+	public void resetGrid() {
+		panel.remove(grid);
+		addTable();
+		panel.repaint();
+		panel.revalidate();
+	}
+	
 	public static void main(String[] args ) {
 		if(args.length < 1) {
 			System.err.println("Invalid number of arguments passed");
@@ -171,6 +188,7 @@ public class GUI extends JFrame {
 		gui.addTextField();
 		gui.addButton();
 		gui.addTable();
+		gui.resetButton();
 		gui.add(panel);
 		System.out.println("Progress");
 	}
