@@ -11,10 +11,10 @@ public class MyAction implements ActionListener {
 	GUI temp = new GUI();
 	public void actionPerformed(ActionEvent e) {
 		temp.update();
-		//get the input category
+		//get the input and category
 		category = temp.getCategory();
-		
 		input = temp.getInput();
+		
 		if (temp.obj.search(category, input)) {
 			ArrayList<Integer> recording = temp.obj.getUpdatedSize(category, input);
 			

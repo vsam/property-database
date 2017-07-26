@@ -8,8 +8,10 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableModel;
@@ -18,13 +20,19 @@ public class GUI extends JFrame {
 	
 	JFrame frame;
 	static JPanel panel;
+	static JPanel middle;
 	static JComboBox<String> options;
 	static JTextField text;
 	JButton button;
 	JButton reset;
+	JButton edit;
+	JButton saving;
 	static String type = new String();
 	static String input = new String();
-	JPanel middle;
+	static String editedName = new String();
+	static int row;
+	static int col;
+	static Boolean check = false;
 	static propertyOrganizer obj;
 	static JScrollPane scrollPane;
 	static JTable grid;
@@ -40,6 +48,7 @@ public class GUI extends JFrame {
 	
 	public GUI(String fileName) {
 		panel = new JPanel();
+		middle = new JPanel();
 		obj = new propertyOrganizer();
 		obj.populateData(fileName);
 	}
@@ -57,6 +66,21 @@ public class GUI extends JFrame {
 		return input;
 	}
 	
+	public String getEditedName() {
+		return editedName;
+	}
+	
+	public int getRow() {
+		return row;
+	}
+	
+	public int getCol() {
+		return col;
+	}
+	
+	public Boolean getCheck() {
+		return check;
+	}
 	
 	public void addCombo() {
 		options = new JComboBox<String>();
@@ -133,10 +157,10 @@ public class GUI extends JFrame {
 			}
 		}
 		grid = new JTable(array, columnNames);
-		//grid.setPreferredScrollableViewportSize(new Dimension(1200, 200));
-		//grid.setFillsViewportHeight(true);
+		grid.setPreferredScrollableViewportSize(new Dimension(1200, 200));
+		grid.setFillsViewportHeight(true);
 		//grid.setAutoResizeMode(4);
-		JScrollPane scrollPane = new JScrollPane(grid);
+		scrollPane = new JScrollPane(grid);
 		grid.setVisible(true);
 		add(scrollPane); 
 		panel.add(grid);
@@ -172,6 +196,30 @@ public class GUI extends JFrame {
 		panel.revalidate();
 	}
 	
+	public void editButton() {
+		edit = new JButton("Edit");
+		edit.setMaximumSize(new Dimension(200, 50));
+		edit.setVisible(true);
+		edit.addActionListener(new EditAction());
+		middle.add(edit);
+	}
+	
+	public void editGrid() {
+		col = grid.getSelectedColumn();
+		row = grid.getSelectedRow();
+		editedName = JOptionPane.showInputDialog("Input Change");
+		check = true;
+		System.out.println(editedName + " row: " + row + " col: "+ col);
+	}
+	
+	public void saveButton() {
+		saving = new JButton("Save");
+		saving.setMaximumSize(new Dimension(200, 50));
+		saving.setVisible(true);
+		saving.addActionListener(new SaveAction());
+		middle.add(saving);
+	}
+	
 	public static void main(String[] args ) {
 		if(args.length < 1) {
 			System.err.println("Invalid number of arguments passed");
@@ -180,6 +228,7 @@ public class GUI extends JFrame {
 		String fileName = args[0];
 		
 		GUI gui = new GUI(fileName);
+		JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		gui.setSize(1000, 400);
 		gui.setVisible(true);
@@ -189,7 +238,13 @@ public class GUI extends JFrame {
 		gui.addButton();
 		gui.addTable();
 		gui.resetButton();
-		gui.add(panel);
+		gui.editButton();
+		gui.saveButton();
+		split.setTopComponent(panel);
+		split.setBottomComponent(middle);
+		split.setDividerLocation(0.7);
+		gui.add(split);
+		gui.validate();
 		System.out.println("Progress");
 	}
 	
