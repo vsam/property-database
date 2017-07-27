@@ -44,8 +44,12 @@ public class GUI extends JFrame {
 	static String newBack = new String();
 	static String newPhone = new String();
 	static String newPm = new String();
+	static String deleteName = new String();
+	static String deleteDesc = new String();
+	static String userInput = new String();
 	static int row;
 	static int col;
+	static int deleteRow;
 	static Boolean check = false;
 	static propertyOrganizer obj;
 	static Property newProperty;
@@ -92,13 +96,23 @@ public class GUI extends JFrame {
 	public int getCol() {
 		return col;
 	}
+	//gets desired row for deletion
+	public int deleteRow() {
+		return deleteRow;
+	}
 	
+	//checks that the edit is valid
 	public Boolean getCheck() {
 		return check;
 	}
 	
 	public Property getNewProperty() {
 		return newProperty;
+	}
+	
+	//confirms the deletion
+	public String getUserInput() {
+		return userInput;
 	}
 	
 	public void addCombo() {
@@ -257,7 +271,7 @@ public class GUI extends JFrame {
 		newDueDate = JOptionPane.showInputDialog("Input Due Date");
 		newNotes = JOptionPane.showInputDialog("Input Notes Name");
 		newAddress = JOptionPane.showInputDialog("Input Address Name");
-		newBack = JOptionPane.showInputDialog("Input Back Name");
+		newBack = JOptionPane.showInputDialog("Input AP Back-UP Name");
 		newPhone = JOptionPane.showInputDialog("Input Phone Name");
 		newPm = JOptionPane.showInputDialog("Input PM Name");
 		newProperty = new Property(newName, newAccountant, newAp, newRm, newOwner, newReviewer,
@@ -270,8 +284,15 @@ public class GUI extends JFrame {
 		delete = new JButton("Delete Property");
 		delete.setMaximumSize(new Dimension(200, 50));
 		delete.setVisible(true);
-		delete.addActionListener(new MyAction());
+		delete.addActionListener(new DeleteAction());
 		middle.add(delete);
+	}
+	
+	public void deleteProperty() {
+		deleteRow = grid.getSelectedRow();
+		//make delete return a boolean
+		userInput = JOptionPane.showInputDialog("Are you sure? (y/n)");
+		obj.list.remove(deleteRow);
 	}
 	
 	
