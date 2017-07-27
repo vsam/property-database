@@ -27,17 +27,32 @@ public class GUI extends JFrame {
 	JButton reset;
 	JButton edit;
 	JButton saving;
+	JButton insert;
+	JButton delete;
 	static String type = new String();
 	static String input = new String();
 	static String editedName = new String();
+	static String newName = new String();
+	static String newAccountant = new String();
+	static String newAp = new String();
+	static String newRm = new String();
+	static String newOwner = new String();
+	static String newReviewer = new String();
+	static String newDueDate = new String();
+	static String newNotes = new String();
+	static String newAddress = new String();
+	static String newBack = new String();
+	static String newPhone = new String();
+	static String newPm = new String();
 	static int row;
 	static int col;
 	static Boolean check = false;
 	static propertyOrganizer obj;
+	static Property newProperty;
 	static JScrollPane scrollPane;
 	static JTable grid;
 	String[][] array;
-	String[] columnNames = {"Property", "Accountant", "AP", "RM", "Owner", "Reviewer", "Due Date", 
+	static String[] columnNames = {"Property", "Accountant", "AP", "RM", "Owner", "Reviewer", "Due Date", 
 			"Notes", "Address", "Back-Up", "Phone Number", "Property Manager"};
 	
 	public GUI() {
@@ -80,6 +95,10 @@ public class GUI extends JFrame {
 	
 	public Boolean getCheck() {
 		return check;
+	}
+	
+	public Property getNewProperty() {
+		return newProperty;
 	}
 	
 	public void addCombo() {
@@ -219,6 +238,42 @@ public class GUI extends JFrame {
 		saving.addActionListener(new SaveAction());
 		middle.add(saving);
 	}
+	public void insertButton() {
+		insert = new JButton("Insert Property");
+		insert.setMaximumSize(new Dimension(200, 50));
+		insert.setVisible(true);
+		insert.addActionListener(new InsertAction());
+		middle.add(insert);
+	}
+	
+	public void insertProperty() {
+		
+		newName = JOptionPane.showInputDialog("Input Property Name");
+		newAccountant = JOptionPane.showInputDialog("Input Accountnant Name");
+		newAp = JOptionPane.showInputDialog("Input AP Name");
+		newRm = JOptionPane.showInputDialog("Input RM Name");
+		newOwner = JOptionPane.showInputDialog("Input Owner Name");
+		newReviewer = JOptionPane.showInputDialog("Input Reviewer Name");
+		newDueDate = JOptionPane.showInputDialog("Input Due Date");
+		newNotes = JOptionPane.showInputDialog("Input Notes Name");
+		newAddress = JOptionPane.showInputDialog("Input Address Name");
+		newBack = JOptionPane.showInputDialog("Input Back Name");
+		newPhone = JOptionPane.showInputDialog("Input Phone Name");
+		newPm = JOptionPane.showInputDialog("Input PM Name");
+		newProperty = new Property(newName, newAccountant, newAp, newRm, newOwner, newReviewer,
+				newDueDate, newNotes, newAddress, newBack, newPhone, newPm);
+		obj.insert(newProperty);
+		
+	}
+	
+	public void deleteButton() {
+		delete = new JButton("Delete Property");
+		delete.setMaximumSize(new Dimension(200, 50));
+		delete.setVisible(true);
+		delete.addActionListener(new MyAction());
+		middle.add(delete);
+	}
+	
 	
 	public static void main(String[] args ) {
 		if(args.length < 1) {
@@ -238,6 +293,8 @@ public class GUI extends JFrame {
 		gui.addButton();
 		gui.addTable();
 		gui.resetButton();
+		gui.insertButton();
+		gui.deleteButton();
 		gui.editButton();
 		gui.saveButton();
 		split.setTopComponent(panel);

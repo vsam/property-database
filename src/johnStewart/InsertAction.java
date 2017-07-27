@@ -3,31 +3,17 @@ package johnStewart;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SaveAction implements ActionListener {
+public class InsertAction implements ActionListener {
 
-	
 	GUI temp = new GUI();
 	
-	int row;
-	int col;
-	Boolean check;
-	String editedName = new String();
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//temp.update();
-		row = temp.getRow();
-		col = temp.getCol();
-		check = temp.getCheck();
-		editedName = temp.getEditedName();
+		// TODO Auto-generated method stub
+		temp.insertProperty();
 		
-		System.out.println(editedName + " row: " + row + " col: "+ col);
-		if (!check) {
-			return;
-		}
-		if (editedName == null) {
-			return;
-		}
+		Property curr = temp.getNewProperty();
 		
 		int num = temp.obj.list.size();
 		String[][] updatedArray = new String[num][12];
@@ -35,10 +21,7 @@ public class SaveAction implements ActionListener {
 		for (int i = 0; i < num; i++) {
 			
 			for (int k = 0; k < 12; k++) {
-				if (i == row && k == col) {
-					updatedArray[i][k] = editedName;
-				}
-				else if (k == 0) {
+				if (k == 0) {
 					updatedArray[i][k] = temp.obj.list.get(i).getName();
 				}
 				else if (k == 1) {
@@ -76,44 +59,8 @@ public class SaveAction implements ActionListener {
 				}
 			}
 		}
-		if (col == 0){
-			temp.obj.list.get(row).name = editedName;
-		}
-		else if (col == 1){
-			temp.obj.list.get(row).accountant = editedName;
-		}
-		else if (col == 2){
-			temp.obj.list.get(row).ap = editedName;
-		}
-		else if (col == 3){
-			temp.obj.list.get(row).rm = editedName;
-		}
-		else if (col == 4){
-			temp.obj.list.get(row).owner = editedName;
-		}
-		else if (col == 5){
-			temp.obj.list.get(row).reviewer = editedName;
-		}
-		else if (col == 6){
-			temp.obj.list.get(row).dueDate = editedName;
-		}
-		else if (col == 7){
-			temp.obj.list.get(row).notes = editedName;
-		}
-		else if (col == 8){
-			temp.obj.list.get(row).address = editedName;
-		}
-		else if (col == 9){
-			temp.obj.list.get(row).back = editedName;
-		}
-		else if (col == 10){
-			temp.obj.list.get(row).phone = editedName;
-		}
-		else if (col == 11){
-			temp.obj.list.get(row).pm = editedName;
-		}
-		check = false;
 		temp.updateTable(updatedArray);
+		
 	}
 
 }
