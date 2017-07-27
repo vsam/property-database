@@ -56,6 +56,7 @@ public class GUI extends JFrame {
 	static Property newProperty;
 	static JScrollPane scrollPane;
 	static JTable grid;
+	static Boolean colCheck = true;
 	String[][] array;
 	static String[] columnNames = {"Property", "Accountant", "AP", "RM", "Owner", "Reviewer", "Due Date", 
 			"Notes", "Address", "Back-Up", "Phone Number", "Property Manager"};
@@ -69,6 +70,7 @@ public class GUI extends JFrame {
 	public GUI(String fileName) {
 		panel = new JPanel();
 		middle = new JPanel();
+		
 		obj = new propertyOrganizer();
 		obj.populateData(fileName);
 	}
@@ -193,7 +195,11 @@ public class GUI extends JFrame {
 		setLayout(new BorderLayout());
 		scrollPane = new JScrollPane();
 		grid = new JTable(array, columnNames);
-		middle.add(grid.getTableHeader(), BorderLayout.NORTH); //North
+		if (colCheck) {
+			middle.add(grid.getTableHeader(), BorderLayout.NORTH); //North
+			colCheck = false;
+		}
+	
 		add(grid, BorderLayout.CENTER);
 		//grid.setPreferredScrollableViewportSize(new Dimension(1200, 100));
 		//grid.setFillsViewportHeight(true);
@@ -210,6 +216,7 @@ public class GUI extends JFrame {
 		//removes the grid from panel
 		middle.remove(grid);
 		grid = new JTable(temp, columnNames);
+		add(grid, BorderLayout.CENTER);
 		//adds the grid to panel
 		middle.add(grid);
 		//updates the table
@@ -229,8 +236,16 @@ public class GUI extends JFrame {
 	}
 	
 	public void resetGrid() {
-		middle.remove(grid);
+		//middle.remove(grid);
+		
+		middle.removeAll();
+		//middle.invalidate();
+		colCheck = true;
 		addTable();
+		insertButton();
+		deleteButton();
+		editButton();
+		saveButton();
 		middle.repaint();
 		middle.revalidate();
 	}
@@ -240,6 +255,7 @@ public class GUI extends JFrame {
 		edit.setMaximumSize(new Dimension(200, 50));
 		edit.setVisible(true);
 		edit.addActionListener(new EditAction());
+		middle.add(edit, BorderLayout.SOUTH);
 		middle.add(edit);
 	}
 	
@@ -256,6 +272,7 @@ public class GUI extends JFrame {
 		saving.setMaximumSize(new Dimension(200, 50));
 		saving.setVisible(true);
 		saving.addActionListener(new SaveAction());
+		middle.add(saving, BorderLayout.SOUTH);
 		middle.add(saving);
 	}
 	public void insertButton() {
@@ -263,6 +280,7 @@ public class GUI extends JFrame {
 		insert.setMaximumSize(new Dimension(200, 50));
 		insert.setVisible(true);
 		insert.addActionListener(new InsertAction());
+		middle.add(insert, BorderLayout.SOUTH);
 		middle.add(insert);
 	}
 	
@@ -291,6 +309,7 @@ public class GUI extends JFrame {
 		delete.setMaximumSize(new Dimension(200, 50));
 		delete.setVisible(true);
 		delete.addActionListener(new DeleteAction());
+		middle.add(delete, BorderLayout.SOUTH);
 		middle.add(delete);
 	}
 	
@@ -318,8 +337,8 @@ public class GUI extends JFrame {
 		gui.addCombo();
 		gui.addTextField();
 		gui.addButton();
-		gui.addTable();
 		gui.resetButton();
+		gui.addTable();
 		gui.insertButton();
 		gui.deleteButton();
 		gui.editButton();
@@ -327,6 +346,7 @@ public class GUI extends JFrame {
 		split.setTopComponent(panel);
 		split.setBottomComponent(middle);
 		split.setDividerLocation(0.7);
+
 		gui.add(split);
 		gui.validate();
 		System.out.println("Progress");
