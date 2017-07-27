@@ -30,6 +30,7 @@ public class GUI extends JFrame {
 	JButton saving;
 	JButton insert;
 	JButton delete;
+	JButton export;
 	static String type = new String();
 	static String input = new String();
 	static String editedName = new String();
@@ -195,6 +196,7 @@ public class GUI extends JFrame {
 		setLayout(new BorderLayout());
 		scrollPane = new JScrollPane();
 		grid = new JTable(array, columnNames);
+		grid.setRowHeight(30);
 		if (colCheck) {
 			middle.add(grid.getTableHeader(), BorderLayout.NORTH); //North
 			colCheck = false;
@@ -216,6 +218,7 @@ public class GUI extends JFrame {
 		//removes the grid from panel
 		//middle.remove(grid);
 		grid = new JTable(temp, columnNames);
+		
 		middle.removeAll();
 		colCheck = true;
 		//addTable();
@@ -224,6 +227,7 @@ public class GUI extends JFrame {
 			colCheck = false;
 		}
 		middle.add(grid);
+		grid.setRowHeight(30);
 		insertButton();
 		deleteButton();
 		editButton();
@@ -332,6 +336,14 @@ public class GUI extends JFrame {
 		userInput = JOptionPane.showInputDialog("Are you sure? ( y / n )");
 		obj.list.remove(deleteRow);
 	}
+	public void exportButton() {
+		export = new JButton("Export to excel file");
+		export.setMaximumSize(new Dimension(200, 50));
+		export.setVisible(true);
+		//write the action to export
+		export.addActionListener(new MyAction());
+		panel.add(export);
+	}
 	
 	
 	public static void main(String[] args ) {
@@ -351,6 +363,7 @@ public class GUI extends JFrame {
 		gui.addTextField();
 		gui.addButton();
 		gui.resetButton();
+		gui.exportButton();
 		gui.addTable();
 		gui.insertButton();
 		gui.deleteButton();
