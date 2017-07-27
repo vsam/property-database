@@ -214,11 +214,24 @@ public class GUI extends JFrame {
 	
 	public void updateTable(String[][] temp) {
 		//removes the grid from panel
-		middle.remove(grid);
+		//middle.remove(grid);
 		grid = new JTable(temp, columnNames);
-		add(grid, BorderLayout.CENTER);
-		//adds the grid to panel
+		middle.removeAll();
+		colCheck = true;
+		//addTable();
+		if (colCheck) {
+			middle.add(grid.getTableHeader(), BorderLayout.NORTH); //North
+			colCheck = false;
+		}
 		middle.add(grid);
+		insertButton();
+		deleteButton();
+		editButton();
+		saveButton();
+		
+		
+		//adds the grid to panel
+		//middle.add(grid);
 		//updates the table
 		middle.repaint();
 		//lets the program know that changes were made
@@ -237,9 +250,9 @@ public class GUI extends JFrame {
 	
 	public void resetGrid() {
 		//middle.remove(grid);
-		
-		middle.removeAll();
 		//middle.invalidate();
+		middle.removeAll();
+		
 		colCheck = true;
 		addTable();
 		insertButton();
