@@ -1,5 +1,6 @@
 package johnStewart;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
@@ -189,27 +190,32 @@ public class GUI extends JFrame {
 				
 			}
 		}
+		setLayout(new BorderLayout());
+		scrollPane = new JScrollPane();
 		grid = new JTable(array, columnNames);
-		grid.setPreferredScrollableViewportSize(new Dimension(1200, 200));
-		grid.setFillsViewportHeight(true);
+		middle.add(grid.getTableHeader(), BorderLayout.NORTH); //North
+		add(grid, BorderLayout.CENTER);
+		//grid.setPreferredScrollableViewportSize(new Dimension(1200, 100));
+		//grid.setFillsViewportHeight(true);
 		//grid.setAutoResizeMode(4);
-		scrollPane = new JScrollPane(grid);
+		scrollPane.setViewportView(grid);	
 		grid.setVisible(true);
-		add(scrollPane); 
-		panel.add(grid);
+		//add(new JScrollPane(grid)); 
+		//panel.add(grid);
+		middle.add(grid);
 		
 	}
 	
 	public void updateTable(String[][] temp) {
 		//removes the grid from panel
-		panel.remove(grid);
+		middle.remove(grid);
 		grid = new JTable(temp, columnNames);
 		//adds the grid to panel
-		panel.add(grid);
+		middle.add(grid);
 		//updates the table
-		panel.repaint();
+		middle.repaint();
 		//lets the program know that changes were made
-		panel.revalidate();
+		middle.revalidate();
 		
 	}
 	
@@ -223,10 +229,10 @@ public class GUI extends JFrame {
 	}
 	
 	public void resetGrid() {
-		panel.remove(grid);
+		middle.remove(grid);
 		addTable();
-		panel.repaint();
-		panel.revalidate();
+		middle.repaint();
+		middle.revalidate();
 	}
 	
 	public void editButton() {
