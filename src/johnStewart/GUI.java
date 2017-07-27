@@ -253,7 +253,7 @@ public class GUI extends JFrame {
 		middle.add(saving);
 	}
 	public void insertButton() {
-		insert = new JButton("Insert Property");
+		insert = new JButton("Add Row");
 		insert.setMaximumSize(new Dimension(200, 50));
 		insert.setVisible(true);
 		insert.addActionListener(new InsertAction());
@@ -281,7 +281,7 @@ public class GUI extends JFrame {
 	}
 	
 	public void deleteButton() {
-		delete = new JButton("Delete Property");
+		delete = new JButton("Delete Row");
 		delete.setMaximumSize(new Dimension(200, 50));
 		delete.setVisible(true);
 		delete.addActionListener(new DeleteAction());
@@ -291,7 +291,7 @@ public class GUI extends JFrame {
 	public void deleteProperty() {
 		deleteRow = grid.getSelectedRow();
 		//make delete return a boolean
-		userInput = JOptionPane.showInputDialog("Are you sure? (y/n)");
+		userInput = JOptionPane.showInputDialog("Are you sure? ( y / n )");
 		obj.list.remove(deleteRow);
 	}
 	
