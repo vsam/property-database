@@ -9,9 +9,6 @@ public class ResetAction implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		temp.resetGrid();
-		
-		
-		
 	}
 
 }

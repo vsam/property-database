@@ -1,7 +1,9 @@
 package johnStewart;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +22,21 @@ import javax.swing.JTextField;
 import javax.*;
 import java.awt.*;
 import java.awt.event.*;
+
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class propertyOrganizer {
 	
@@ -68,6 +85,113 @@ public class propertyOrganizer {
 		}
 		return true;
 		//Property temp = new property();
+	}
+	
+	public static void readXLSXFile(String root) throws IOException
+	{
+		ArrayList<Property> temp = new ArrayList<Property>();
+		root = "/home/sam/Projects/data/masterUpdated.xlsx";
+		InputStream ExcelFileToRead = new FileInputStream(root);
+		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);
+		int num = 0;
+		XSSFWorkbook test = new XSSFWorkbook(); 
+		
+		XSSFSheet sheet = wb.getSheetAt(0);
+		XSSFRow row; 
+		XSSFCell cell;
+
+		Iterator rows = sheet.rowIterator();
+		
+		String name = new String();
+		String accountant = new String();
+		String ap = new String();
+		String rm = new String();
+		String owner = new String();
+		String reviewer = new String();
+		String dueDate = new String();
+		String notes = new String();
+		String address = new String();
+		String back = new String();
+		String phone = new String();
+		String pm = new String();
+		String units = new String();
+		String part1 = new String();
+		double part2; // = new String();
+		int number = 0;
+		
+		while (rows.hasNext())
+		{
+			int count = 0;
+			row=(XSSFRow) rows.next();
+			Iterator cells = row.cellIterator();
+			
+			while (cells.hasNext())
+			{
+				
+				cell = (XSSFCell) cells.next();
+				//System.out.println("cell: " + cell);
+				if (cell == null) {
+					//standby
+				}
+				else if (count == 0){
+					name = cell.getStringCellValue();
+				}
+				else if (count == 1) {
+					accountant = cell.getStringCellValue();
+				}
+				else if (count == 2) {
+					ap = cell.getStringCellValue();
+				}
+				else if (count == 3) {
+					rm = cell.getStringCellValue();
+				}
+				else if (count == 4) {
+					owner = cell.getStringCellValue();
+				}
+				else if (count == 5) {
+					reviewer = cell.getStringCellValue();
+				}
+				else if (count == 6) {
+					dueDate = cell.getStringCellValue();
+				}
+				else if (count == 7) {
+					notes = cell.getStringCellValue();
+				}
+				else if (count == 8) {
+					
+					address = cell.getStringCellValue();
+				}
+				else if (count == 9) {
+					part1 = cell.getStringCellValue();
+					address = address + part1;
+				}
+				else if (count == 10) {
+					
+					part2 = cell.getNumericCellValue(); //Cannot get a STRING value from a NUMERIC cell
+					// double to string
+					address = address + Double.toString(part2);
+				}
+				else if (count == 11) {
+					back = cell.getStringCellValue();
+				}
+				else if (count == 12) {
+					phone = cell.getStringCellValue();
+				}
+				else if (count == 13) {
+					pm = cell.getStringCellValue();
+				}
+				else if (count == 14) {
+					double unitN = cell.getNumericCellValue();
+					units =  Double.toString(unitN);//not being used
+				}
+				count++;
+			}
+			Property curr = new Property(name, accountant, ap, rm, owner, reviewer, 
+					dueDate, notes, address, back, phone, pm);
+			temp.add(curr);
+		}
+		list = temp;
+	
 	}
 	
 	public void insert(Property temp) {
@@ -297,35 +421,3 @@ public class propertyOrganizer {
 		return temp;
 	}
 }
-	/*public static void main(String[] args){
-		
-		JFrame frame = new JFrame("Organizer");
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(1200, 800);
-		//create a panel to be the button
-		JPanel middle = new JPanel();
-		middle.add(Box.createVerticalGlue());
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
-		
-		options.setMaximumSize(new Dimension(200, 50));
-		panel.add(options);
-		
-		text.setMaximumSize(new Dimension(200, 50));
-		panel.add(text);
-		//type= text.getText();
-		
-		button.setMaximumSize(new Dimension(200, 50));
-		panel.add(button);
-		/*if (type != null) {
-			button.addActionListener(new Action());
-		}
-		//panel.add(grid);
-		middle.add(grid);
-		middle.add(scrollPane);
-		System.out.println("here");
-		//added to frame
-		frame.add(panel);
-		frame.add(middle);
-	}*/

@@ -13,6 +13,7 @@ public class Property {
 	String back;
 	String phone;
 	String pm;
+	String units; //newly added
 	
 	public Property(String name, String accountant, String ap, 
 			String rm, String owner, String reviewer, String dueDate, 

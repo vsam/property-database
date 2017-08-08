@@ -1,0 +1,22 @@
+
+1. master project 
+property name
+units
+address + city + zip
+phone
+property manager
+regional manager
+ap clerk
+accountant
+client
+
+updated Portfolio->Staff accountants
+2. 
+due date
+reviewer
+notes
+
+updated Portfolio->accounting clerks
+3. 
+backup
+

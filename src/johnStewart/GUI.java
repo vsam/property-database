@@ -3,6 +3,7 @@ package johnStewart;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.io.IOException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -31,6 +32,7 @@ public class GUI extends JFrame {
 	JButton insert;
 	JButton delete;
 	JButton export;
+	JButton importB;
 	static String type = new String();
 	static String input = new String();
 	static String editedName = new String();
@@ -49,6 +51,7 @@ public class GUI extends JFrame {
 	static String deleteName = new String();
 	static String deleteDesc = new String();
 	static String userInput = new String();
+	static String root = new String();
 	static int row;
 	static int col;
 	static int deleteRow;
@@ -63,8 +66,12 @@ public class GUI extends JFrame {
 			"Notes", "Address", "Back-Up", "Phone Number", "Property Manager"};
 	
 	public GUI() {
-		type = getCategory();
-		input = getInput();
+		//panel = new JPanel();
+		//middle = new JPanel();
+		//obj = new propertyOrganizer();
+		
+		//type = getCategory();
+		//input = getInput();
 		
 	}
 	
@@ -73,7 +80,7 @@ public class GUI extends JFrame {
 		middle = new JPanel();
 		
 		obj = new propertyOrganizer();
-		obj.populateData(fileName);
+		//obj.populateData(fileName);
 	}
 	
 	public void update() {
@@ -117,6 +124,10 @@ public class GUI extends JFrame {
 	//confirms the deletion
 	public String getUserInput() {
 		return userInput;
+	}
+	
+	public String getRoot() {
+		return root;
 	}
 	
 	public void addCombo() {
@@ -210,6 +221,7 @@ public class GUI extends JFrame {
 		grid.setVisible(true);
 		//add(new JScrollPane(grid)); 
 		//panel.add(grid);
+		
 		middle.add(grid);
 		
 	}
@@ -345,20 +357,36 @@ public class GUI extends JFrame {
 		panel.add(export);
 	}
 	
+	public void importButton() {
+		importB = new JButton("Import an excel file");
+		importB.setMaximumSize(new Dimension(200, 50));
+		importB.setVisible(true);
+		//write the action to export
+		importB.addActionListener(new importAction());
+		panel.add(importB);
+	}
+	
+	public void importData() throws IOException {
+		root = JOptionPane.showInputDialog("Enter the file path");
+		obj.readXLSXFile(root);
+		resetGrid();
+		
+	}
 	
 	public static void main(String[] args ) {
-		if(args.length < 1) {
+		/*if(args.length < 1) {
 			System.err.println("Invalid number of arguments passed");
 			return;
-		}
-		String fileName = args[0];
-		
-		GUI gui = new GUI(fileName);
+		}*/
+		//String fileName = args[0];
+		JScrollPane scrollPane = new JScrollPane();
+		GUI gui = new GUI("example"); //filename
 		JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		gui.setSize(1000, 400);
 		gui.setVisible(true);
 		
+		gui.importButton();
 		gui.addCombo();
 		gui.addTextField();
 		gui.addButton();
@@ -372,7 +400,7 @@ public class GUI extends JFrame {
 		split.setTopComponent(panel);
 		split.setBottomComponent(middle);
 		split.setDividerLocation(0.7);
-
+		
 		gui.add(split);
 		gui.validate();
 		System.out.println("Progress");
