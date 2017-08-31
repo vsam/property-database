@@ -16,11 +16,11 @@ public class InsertAction implements ActionListener {
 		Property curr = temp.getNewProperty();
 		
 		int num = temp.obj.list.size();
-		String[][] updatedArray = new String[num][12];
+		String[][] updatedArray = new String[num][13];  //changed
 		//System.out.println("first: " + temp.obj.list.get(0).getName());
 		for (int i = 0; i < num; i++) {
 			
-			for (int k = 0; k < 12; k++) {
+			for (int k = 0; k < 13; k++) { //changed
 				if (k == 0) {
 					updatedArray[i][k] = temp.obj.list.get(i).getName();
 				}
@@ -57,6 +57,10 @@ public class InsertAction implements ActionListener {
 				else if (k == 11) {
 					updatedArray[i][k] = temp.obj.list.get(i).getPm();
 				}
+				else if (k == 12) {
+					updatedArray[i][k] = temp.obj.list.get(i).getUnits();
+				}
+				
 			}
 		}
 		temp.updateTable(updatedArray);

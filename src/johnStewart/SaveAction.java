@@ -2,6 +2,7 @@ package johnStewart;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class SaveAction implements ActionListener {
 
@@ -11,11 +12,13 @@ public class SaveAction implements ActionListener {
 	int row;
 	int col;
 	Boolean check;
+	Boolean gridCheck;
 	String editedName = new String();
+	ArrayList<Integer> shortened = new ArrayList<Integer>();
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//temp.update();
+		//row could be the wrong number
 		row = temp.getRow();
 		col = temp.getCol();
 		check = temp.getCheck();
@@ -28,13 +31,23 @@ public class SaveAction implements ActionListener {
 		if (editedName == null) {
 			return;
 		}
+		//in case its the specific view
+		shortened = temp.getRecordingCopy();
+		gridCheck = temp.getCurrGrid();
+		
+		//checks if its the shortened Grid
+		if (gridCheck) {
+			int newRow = shortened.get(row);
+			row = newRow;
+			System.out.println("SaveAction Row: " + row);
+		}
 		
 		int num = temp.obj.list.size();
-		String[][] updatedArray = new String[num][12];
+		String[][] updatedArray = new String[num][13]; //changed
 		//System.out.println("first: " + temp.obj.list.get(0).getName());
 		for (int i = 0; i < num; i++) {
 			
-			for (int k = 0; k < 12; k++) {
+			for (int k = 0; k < 13; k++) {
 				if (i == row && k == col) {
 					updatedArray[i][k] = editedName;
 				}
@@ -74,8 +87,12 @@ public class SaveAction implements ActionListener {
 				else if (k == 11) {
 					updatedArray[i][k] = temp.obj.list.get(i).getPm();
 				}
+				else if (k == 12) {
+					updatedArray[i][k] = temp.obj.list.get(i).getUnits();
+				}
 			}
 		}
+		
 		if (col == 0){
 			temp.obj.list.get(row).name = editedName;
 		}
@@ -112,6 +129,10 @@ public class SaveAction implements ActionListener {
 		else if (col == 11){
 			temp.obj.list.get(row).pm = editedName;
 		}
+		else if (col == 12) {
+			temp.obj.list.get(row).units = editedName;
+		}
+	
 		check = false;
 		temp.updateTable(updatedArray);
 	}

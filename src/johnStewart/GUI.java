@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -16,6 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public class GUI extends JFrame {
@@ -48,14 +51,19 @@ public class GUI extends JFrame {
 	static String newBack = new String();
 	static String newPhone = new String();
 	static String newPm = new String();
+	static String newUnits = new String (); //changed
 	static String deleteName = new String();
 	static String deleteDesc = new String();
 	static String userInput = new String();
 	static String root = new String();
+	static String location = new String();
 	static int row;
 	static int col;
 	static int deleteRow;
+	static int deleteRowCopy;
+	static ArrayList<Integer> recordingCopy;
 	static Boolean check = false;
+	static Boolean currGrid = false;
 	static propertyOrganizer obj;
 	static Property newProperty;
 	static JScrollPane scrollPane;
@@ -63,22 +71,15 @@ public class GUI extends JFrame {
 	static Boolean colCheck = true;
 	String[][] array;
 	static String[] columnNames = {"Property", "Accountant", "AP", "RM", "Owner", "Reviewer", "Due Date", 
-			"Notes", "Address", "Back-Up", "Phone Number", "Property Manager"};
+			"Notes", "Address", "Back-Up", "Phone Number", "Property Manager", "Units"};
 	
 	public GUI() {
-		//panel = new JPanel();
-		//middle = new JPanel();
-		//obj = new propertyOrganizer();
-		
-		//type = getCategory();
-		//input = getInput();
-		
+		//buffer for the button actions
 	}
 	
 	public GUI(String fileName) {
 		panel = new JPanel();
 		middle = new JPanel();
-		
 		obj = new propertyOrganizer();
 		//obj.populateData(fileName);
 	}
@@ -117,6 +118,10 @@ public class GUI extends JFrame {
 		return check;
 	}
 	
+	public Boolean getCurrGrid() {
+		return currGrid;
+	}
+	
 	public Property getNewProperty() {
 		return newProperty;
 	}
@@ -128,6 +133,22 @@ public class GUI extends JFrame {
 	
 	public String getRoot() {
 		return root;
+	}
+	
+	public String getFileLocation() {
+		return location;
+	}
+	//get
+	public void shortenGrid(Integer[] temp) {
+		recordingCopy = new ArrayList<Integer>();
+		for (int i = 0; i < temp.length; i++) {
+			recordingCopy.add(temp[i]);
+		}
+		currGrid = true;
+	}
+	
+	public ArrayList<Integer> getRecordingCopy() {
+		return recordingCopy;
 	}
 	
 	public void addCombo() {
@@ -161,10 +182,10 @@ public class GUI extends JFrame {
 	}
 	
 	public void addTable() {
-		array = new String[obj.list.size()][12];
+		array = new String[obj.list.size()][13]; //changed
 		
 		for (int i = 0; i < obj.list.size(); i++) {
-			for (int k = 0; k < 12; k++) {
+			for (int k = 0; k < 13; k++) { //changed
 				if (k == 0) {
 					array[i][k] = obj.list.get(i).getName();
 				}
@@ -201,45 +222,47 @@ public class GUI extends JFrame {
 				else if (k == 11) {
 					array[i][k] = obj.list.get(i).getPm();
 				}
+				else if (k == 12) {
+					array[i][k] = obj.list.get(i).getUnits(); //changed
+				}
 				
 			}
 		}
 		setLayout(new BorderLayout());
-		scrollPane = new JScrollPane();
+		
 		grid = new JTable(array, columnNames);
 		grid.setRowHeight(30);
+		//adds the headers to the columns
 		if (colCheck) {
 			middle.add(grid.getTableHeader(), BorderLayout.NORTH); //North
 			colCheck = false;
 		}
-	
-		add(grid, BorderLayout.CENTER);
-		//grid.setPreferredScrollableViewportSize(new Dimension(1200, 100));
-		//grid.setFillsViewportHeight(true);
-		//grid.setAutoResizeMode(4);
-		scrollPane.setViewportView(grid);	
-		grid.setVisible(true);
-		//add(new JScrollPane(grid)); 
-		//panel.add(grid);
-		
-		middle.add(grid);
-		
+		grid.setPreferredScrollableViewportSize(new Dimension(1000, 300));
+		grid.setFillsViewportHeight(true);
+		scrollPane = new JScrollPane(grid);
+		//added the scrollPane instead of the grid
+		middle.add(scrollPane);
 	}
 	
 	public void updateTable(String[][] temp) {
 		//removes the grid from panel
 		//middle.remove(grid);
 		grid = new JTable(temp, columnNames);
-		
+		//back to normal size
+		//currGrid = false;
 		middle.removeAll();
 		colCheck = true;
-		//addTable();
+		
 		if (colCheck) {
 			middle.add(grid.getTableHeader(), BorderLayout.NORTH); //North
-			colCheck = false;
+			colCheck = false; 
 		}
-		middle.add(grid);
+		grid.setPreferredScrollableViewportSize(new Dimension(1000, 300));
+		grid.setFillsViewportHeight(true);
 		grid.setRowHeight(30);
+		scrollPane = new JScrollPane(grid);
+		//adds a selective table
+		middle.add(scrollPane);
 		insertButton();
 		deleteButton();
 		editButton();
@@ -268,8 +291,9 @@ public class GUI extends JFrame {
 		//middle.remove(grid);
 		//middle.invalidate();
 		middle.removeAll();
-		
 		colCheck = true;
+		//back to normal size
+		currGrid = false;
 		addTable();
 		insertButton();
 		deleteButton();
@@ -284,8 +308,7 @@ public class GUI extends JFrame {
 		edit.setMaximumSize(new Dimension(200, 50));
 		edit.setVisible(true);
 		edit.addActionListener(new EditAction());
-		middle.add(edit, BorderLayout.SOUTH);
-		middle.add(edit);
+		middle.add(edit, BorderLayout.SOUTH); //changed to panel
 	}
 	
 	public void editGrid() {
@@ -301,16 +324,14 @@ public class GUI extends JFrame {
 		saving.setMaximumSize(new Dimension(200, 50));
 		saving.setVisible(true);
 		saving.addActionListener(new SaveAction());
-		middle.add(saving, BorderLayout.SOUTH);
-		middle.add(saving);
+		middle.add(saving, BorderLayout.SOUTH); //changed to panel
 	}
 	public void insertButton() {
 		insert = new JButton("Add Row");
 		insert.setMaximumSize(new Dimension(200, 50));
 		insert.setVisible(true);
 		insert.addActionListener(new InsertAction());
-		middle.add(insert, BorderLayout.SOUTH);
-		middle.add(insert);
+		middle.add(insert, BorderLayout.SOUTH); //changed to panel
 	}
 	
 	public void insertProperty() {
@@ -327,8 +348,9 @@ public class GUI extends JFrame {
 		newBack = JOptionPane.showInputDialog("Input AP Back-UP Name");
 		newPhone = JOptionPane.showInputDialog("Input Phone Name");
 		newPm = JOptionPane.showInputDialog("Input PM Name");
+		newUnits = JOptionPane.showInputDialog("Input Number of Units");
 		newProperty = new Property(newName, newAccountant, newAp, newRm, newOwner, newReviewer,
-				newDueDate, newNotes, newAddress, newBack, newPhone, newPm);
+				newDueDate, newNotes, newAddress, newBack, newPhone, newPm, newUnits);
 		obj.insert(newProperty);
 		
 	}
@@ -338,23 +360,46 @@ public class GUI extends JFrame {
 		delete.setMaximumSize(new Dimension(200, 50));
 		delete.setVisible(true);
 		delete.addActionListener(new DeleteAction());
-		middle.add(delete, BorderLayout.SOUTH);
-		middle.add(delete);
+		middle.add(delete, BorderLayout.SOUTH); //changed to panel
 	}
 	
 	public void deleteProperty() {
+		//will be the wrong row selected
+		
+		//get the property so its easy to delete
 		deleteRow = grid.getSelectedRow();
+		
 		//make delete return a boolean
 		userInput = JOptionPane.showInputDialog("Are you sure? ( y / n )");
-		obj.list.remove(deleteRow);
+		System.out.println("old Size: " + obj.list.size());
+		//had to make a static reference
+		//need to make a check for which grid is seen
+		
+		if (currGrid) {
+			deleteRowCopy = recordingCopy.get(deleteRow);
+			System.out.println("selectedRow: " + recordingCopy.get(deleteRow));
+			System.out.println(obj.list.get(recordingCopy.get(deleteRow)).getName());
+			obj.list.remove(deleteRowCopy);
+		}
+		else {
+			obj.list.remove(deleteRow);
+		}
+		
+		
+		resetGrid();
 	}
 	public void exportButton() {
 		export = new JButton("Export to excel file");
 		export.setMaximumSize(new Dimension(200, 50));
 		export.setVisible(true);
 		//write the action to export
-		export.addActionListener(new MyAction());
+		export.addActionListener(new ExportAction());
 		panel.add(export);
+	}
+	
+	public void exportFile() throws IOException {
+		location = JOptionPane.showInputDialog("Enter the destination");
+		obj.writeXLSXFile(location);
 	}
 	
 	public void importButton() {
@@ -374,12 +419,7 @@ public class GUI extends JFrame {
 	}
 	
 	public static void main(String[] args ) {
-		/*if(args.length < 1) {
-			System.err.println("Invalid number of arguments passed");
-			return;
-		}*/
-		//String fileName = args[0];
-		JScrollPane scrollPane = new JScrollPane();
+		
 		GUI gui = new GUI("example"); //filename
 		JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 

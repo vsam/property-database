@@ -10,7 +10,6 @@ public class EditAction implements ActionListener {
 
 	GUI temp = new GUI();
 	
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		temp.editGrid();

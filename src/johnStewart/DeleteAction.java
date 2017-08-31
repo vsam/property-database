@@ -12,17 +12,21 @@ public class DeleteAction implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		temp.deleteProperty();
+		if (userInput == null) {
+			return;
+		}
 		userInput = temp.getUserInput().toLowerCase();
 		if (!userInput.equals("y") && !userInput.equals("yes")) {
 			return;
 		}
 		
 		int num = temp.obj.list.size();
-		String[][] updatedArray = new String[num][12];
+		System.out.println("new Size: " + num);
+		String[][] updatedArray = new String[num][13]; //changed
 		//System.out.println("first: " + temp.obj.list.get(0).getName());
 		for (int i = 0; i < num; i++) {
 			
-			for (int k = 0; k < 12; k++) {
+			for (int k = 0; k < 13; k++) { //changed
 				if (k == 0) {
 					updatedArray[i][k] = temp.obj.list.get(i).getName();
 				}
@@ -58,6 +62,9 @@ public class DeleteAction implements ActionListener {
 				}
 				else if (k == 11) {
 					updatedArray[i][k] = temp.obj.list.get(i).getPm();
+				}
+				else if (k == 12) {
+					updatedArray[i][k] = temp.obj.list.get(i).getUnits();
 				}
 			}
 		}

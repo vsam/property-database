@@ -49,44 +49,6 @@ public class propertyOrganizer {
 		list = new ArrayList<Property>();
 	}
 	
-	public static boolean populateData(String fileName) {
-		File file = new File(fileName);
-		ArrayList<Property> temp = new ArrayList<Property>();
-		try {
-			
-			Scanner scanner = new Scanner(file);
-			while(scanner.hasNextLine()) {
-				
-				String name = scanner.next();
-				String accountant = scanner.next();
-				String ap = scanner.next();
-				String rm = scanner.next();
-				String owner = scanner.next();
-				String reviewer = scanner.next();  //added
-				String dueDate = scanner.next();
-				String notes = scanner.next();
-				String address = scanner.next();
-				String back = scanner.next();
-				String phone = scanner.next();
-				String pm = scanner.next();
-			
-				Property curr = new Property(name, accountant, ap, rm, owner, reviewer, 
-						dueDate, notes, address, back, phone, pm);
-				temp.add(curr);
-			}
-			list = temp;
-			
-			scanner.close();
-		}
-		//returns an error if something goes wrong
-		catch(FileNotFoundException e) {
-			System.out.println("\nFile not found!!");
-			return false;
-		}
-		return true;
-		//Property temp = new property();
-	}
-	
 	public static void readXLSXFile(String root) throws IOException
 	{
 		ArrayList<Property> temp = new ArrayList<Property>();
@@ -187,11 +149,79 @@ public class propertyOrganizer {
 				count++;
 			}
 			Property curr = new Property(name, accountant, ap, rm, owner, reviewer, 
-					dueDate, notes, address, back, phone, pm);
+					dueDate, notes, address, back, phone, pm, units); //changed
 			temp.add(curr);
 		}
 		list = temp;
 	
+	}
+	
+public static void writeXLSXFile(String fileName) throws IOException {
+		
+		fileName = "/home/sam/Projects/data/Test.xlsx"; //name of excel file
+
+		String sheetName = "Sheet1";//name of sheet
+
+		XSSFWorkbook wb = new XSSFWorkbook();
+		XSSFSheet sheet = wb.createSheet(sheetName) ;
+
+		//iterating r number of rows
+		for (int r=0;r < list.size(); r++ )
+		{
+			XSSFRow row = sheet.createRow(r);
+
+			//iterating c number of columns
+			for (int c=0; c < 13; c++ )
+			{
+				XSSFCell cell = row.createCell(c);
+				if (c == 0) {
+					cell.setCellValue(list.get(r).getName());
+				}
+				else if ( c == 1) {
+					cell.setCellValue(list.get(r).getAccountant());
+				}
+				else if ( c == 2) {
+					cell.setCellValue(list.get(r).getAp());
+				}
+				else if ( c == 3) {
+					cell.setCellValue(list.get(r).getRm());
+				}
+				else if ( c == 4) {
+					cell.setCellValue(list.get(r).getOwner());
+				}
+				else if ( c == 5) {
+					cell.setCellValue(list.get(r).getReviewer());
+				}
+				else if ( c == 6) {
+					cell.setCellValue(list.get(r).getDueDate());
+				}
+				else if ( c == 7) {
+					cell.setCellValue(list.get(r).getNotes());
+				}
+				else if ( c == 8) {
+					cell.setCellValue(list.get(r).getAddress());
+				}
+				else if ( c == 9) {
+					cell.setCellValue(list.get(r).getBack());
+				}
+				else if ( c == 10) {
+					cell.setCellValue(list.get(r).getPhone());
+				}
+				else if ( c == 11) {
+					cell.setCellValue(list.get(r).getPm());
+				}
+				else if ( c == 12) {
+					cell.setCellValue(list.get(r).getUnits());
+				}
+			}
+		}
+
+		FileOutputStream fileOut = new FileOutputStream(fileName);
+
+		//write this workbook to an Outputstream.
+		wb.write(fileOut);
+		fileOut.flush();
+		fileOut.close();
 	}
 	
 	public void insert(Property temp) {
@@ -373,51 +403,5 @@ public class propertyOrganizer {
 			temp.remove(count);
 		}
 		list = sorted;
-	}
-	
-	public static String[][] toArray() {
-		String[][] temp = new String[12][list.size()];
-		System.out.println("Notes: "+list.get(0).getNotes());
-		for (int i = 0; i < list.size(); i++) {
-			for (int k = 0; k < 12; k++) {
-				if (k == 0) {
-					temp[i][k] = list.get(i).getName();
-				}
-				else if (k == 1) {
-					temp[i][k] = list.get(i).getAccountant();
-				}
-				else if (k == 2) {
-					temp[i][k] = list.get(i).getAp();
-				}
-				else if (k == 3) {
-					temp[i][k] = list.get(i).getRm();
-				}
-				else if (k == 4) {
-					temp[i][k] = list.get(i).getOwner();
-				}
-				else if (k == 5) {
-					temp[i][k] = list.get(i).getReviewer();
-				}
-				else if (k == 6) {
-					temp[i][k] = list.get(i).getDueDate();
-				}
-				else if (k == 7) {
-					temp[i][k] = list.get(i).getNotes();
-				}
-				else if (k == 8) {
-					temp[i][k] = list.get(i).getAddress();
-				}
-				else if (k == 9) {
-					temp[i][k] = list.get(i).getBack();
-				}
-				else if (k == 10) {
-					temp[i][k] = list.get(i).getPhone();
-				}
-				else if (k == 11) {
-					temp[i][k] = list.get(i).getPm();
-				}
-			}
-		}
-		return temp;
 	}
 }

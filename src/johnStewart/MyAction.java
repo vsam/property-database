@@ -14,14 +14,22 @@ public class MyAction implements ActionListener {
 		//get the input and category
 		category = temp.getCategory();
 		input = temp.getInput();
-		
+		//checks if the input is in the table
 		if (temp.obj.search(category, input)) {
+			//different size using different arraylist
 			ArrayList<Integer> recording = temp.obj.getUpdatedSize(category, input);
+			Integer[] copyList = new Integer[recording.size()];
 			
-			String[][] updatedArray = new String[recording.size()][12];
+			//update the array in gui class
+			for (int i = 0; i < recording.size(); i++) {
+				copyList[i] = recording.get(i);
+			}
+			temp.shortenGrid(copyList);
+			String[][] updatedArray = new String[recording.size()][13]; //changed
 			int count = recording.size();
+			
 			for (int i = 0; i < count; i++) {
-				for (int k = 0; k < 12; k++) {
+				for (int k = 0; k < 13; k++) { //changed
 					if (k == 0) {
 						updatedArray[i][k] = temp.obj.list.get(recording.get(0)).getName();
 					}
@@ -58,19 +66,16 @@ public class MyAction implements ActionListener {
 					else if (k == 11) {
 						updatedArray[i][k] = temp.obj.list.get(recording.get(0)).getPm();
 					}
+					else if (k == 12) {
+						updatedArray[i][k] = temp.obj.list.get(recording.get(0)).getUnits();
+					}
 				}
 				recording.remove(0);
 			}
 			temp.updateTable(updatedArray);
-			
 		}
 		
 		//check if the name is in the category
 		System.out.println(temp.obj.search(category, input));
-		
-		//temp.grid.removeRowSelectionInterval(1, 3);
-		//temp.grid.updateUI();
-		//create the new table
-		//temp.addTable();
 	}
 }

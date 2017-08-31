@@ -17,7 +17,7 @@ public class Property {
 	
 	public Property(String name, String accountant, String ap, 
 			String rm, String owner, String reviewer, String dueDate, 
-			String notes, String address, String back, String phone, String pm) {
+			String notes, String address, String back, String phone, String pm, String units) { //changed
 		this.name = name;
 		this.accountant = accountant;
 		this.ap = ap;
@@ -30,6 +30,7 @@ public class Property {
 		this.back = back;
 		this.phone = phone;
 		this.pm = pm;
+		this.units = units;
 	}
 	
 	public String getName() {
@@ -67,6 +68,9 @@ public class Property {
 	}
 	public String getPm() {
 		return pm;
+	}
+	public String getUnits() {
+		return units;
 	}
 	
 }
