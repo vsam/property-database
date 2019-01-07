@@ -1,4 +1,6 @@
 # Property Database
+A Java GUI that allows the user to import an Excel file into the editable database, edit and save changes, sort the data based on accountants, property management companies, etc. and export the database into an Excel file.
+
 ## Import Files
 Import an excel file (.xlsx) into the database by inputting the file's path.
 
